@@ -1,4 +1,6 @@
 class ContactsController < ApplicationController
+  before_action :set_contact, only: %i[show destroy]
+
   def index
     @contacts = Contact.all
   end
