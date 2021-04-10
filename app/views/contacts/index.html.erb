@@ -22,10 +22,10 @@
     <% @contacts.each do |contact| %>
       <tr>
         <td><%= contact.name %></td>
-        <td><%= contact.birthday %></td>
+        <td><%= format_date(contact.birthday) %></td>
         <td><%= contact.phone %></td>
         <td><%= contact.address %></td>
-        <td><%= contact.credit_card %></td>
+        <td><%= (contact.credit_card).last(4) %></td>
         <td><%= contact.franchise %></td>
         <td><%= contact.email %></td>
         <td><%= link_to 'Show', contact %></td>

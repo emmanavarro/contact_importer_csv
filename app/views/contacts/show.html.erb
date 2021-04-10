@@ -7,7 +7,7 @@
 
 <p>
   <strong>Birthday:</strong>
-  <%= @contact.birthday %>
+  <%= format_date(@contact.birthday) %>
 </p>
 
 <p>
@@ -22,7 +22,7 @@
 
 <p>
   <strong>Credit Card:</strong>
-  <%= @contact.credit_card %>
+  <%= (@contact.credit_card).last(4) %>
 </p>
 
 <p>
