@@ -7,7 +7,7 @@ RSpec.describe Contact, type: :model do
     it { should belong_to(:user) }
   end
 
-  describe '#validations' do
+  describe 'general validations' do
     let(:contact) { Contact.new }
     let(:user) { User.new(email: 'emma.navarro@koombea.com', password: '123456') }
 
@@ -60,4 +60,12 @@ RSpec.describe Contact, type: :model do
       expect(contact.errors[:email]).to include("can't be blank")
     end
   end
+
+  describe 'name field validations' do
+    it { should allow_value('Yesid Lopez').for(:name) }
+    it { should allow_value('Yesid-Lopez').for(:name) }
+    it { should_not allow_value('Yesid#Lopez').for(:name).with_message('- is the only special character allowed') }
+  end
+
+  
 end
