@@ -17,6 +17,11 @@ class Contact < ApplicationRecord
     errors.add(:birthday, 'only YYYYMMDD and YYYY-MM-DD formats are allowed')
   end
 
+  def file_type_validation
+    valid_type = ['text/csv']
+    errors.add(:file, 'file must be of CSV type.') if file.attached? && !file.content_type.in?(valid_type)
+  end
+
   def self.import(file, user)
     CSV.foreach(file.path, headers: true) do |row|
       contact_elements = row.to_h
