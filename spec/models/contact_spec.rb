@@ -1,11 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Contact, type: :model do
+  describe 'association' do
+    it { should belong_to(:user) }
+  end
+
   describe '#validations' do
     let(:contact) { Contact.new }
+    let(:user) { User.new(email: 'emma.navarro@koombea.com', password: '123456') }
 
-    it 'is valid with parameters' do
-      User.create(email: 'emma.navarro@koombea.com', password: '123456')
+    it 'is valid' do
       contact = Contact.new(
         name: 'Yesid Lopez',
         phone: '(+57) 320-482-73-27',
