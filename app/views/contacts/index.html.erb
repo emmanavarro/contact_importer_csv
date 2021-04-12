@@ -1,0 +1,44 @@
+<%= link_to 'Log Out', destroy_user_session_path, method: :delete %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Contacts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Birthday</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Credit Card</th>
+      <th>Franchise</th>
+      <th>Email</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contacts.each do |contact| %>
+      <tr>
+        <td><%= contact.name %></td>
+        <td><%= format_date(contact.birthday) %></td>
+        <td><%= contact.phone %></td>
+        <td><%= contact.address %></td>
+        <td><%= (contact.credit_card).last(4) %></td>
+        <td><%= contact.franchise %></td>
+        <td><%= contact.email %></td>
+        <td><%= link_to 'Show', contact %></td>
+        <td><%= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h3>Import your contacts</h3>
+<%= form_tag import_contacts_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Upload Contacts" %>
+<% end %>
