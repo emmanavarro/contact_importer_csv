@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
@@ -7,5 +9,12 @@ class ApplicationRecord < ActiveRecord::Base
         record.errors.add attribute, (options[:message] || 'is not a valid email')
       end
     end
+  end
+
+  class CreditCardModel
+    attr_accessor :number
+
+    include ActiveModel::Validations
+    validates :number, presence: true, credit_card_number: true
   end
 end
