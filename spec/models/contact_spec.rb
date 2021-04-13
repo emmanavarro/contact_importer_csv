@@ -8,57 +8,12 @@ RSpec.describe Contact, type: :model do
   end
 
   describe 'general validations' do
-    let(:contact) { Contact.new }
-    let(:user) { User.new(email: 'emma.navarro@koombea.com', password: '123456') }
-
-    it 'is valid' do
-      contact = Contact.new(
-        name: 'Yesid Lopez',
-        phone: '(+57) 320-482-73-27',
-        email: 'yesid@example.com',
-        address: 'Cra 47 # 57 -90',
-        birthday: '19911204',
-        credit_card: '15628778935627434',
-        user_id: 1
-      )
-      expect(contact).to be_valid
-    end
-
-    it 'is missing name' do
-      contact.name = nil
-      expect(contact).not_to be_valid
-      expect(contact.errors[:name]).to include("can't be blank")
-    end
-
-    it 'is missing birthday' do
-      contact.birthday = nil
-      expect(contact).not_to be_valid
-      expect(contact.errors[:birthday]).to include("can't be blank")
-    end
-
-    it 'is missing phone' do
-      contact.phone = nil
-      expect(contact).not_to be_valid
-      expect(contact.errors[:phone]).to include("can't be blank")
-    end
-
-    it 'is missing address' do
-      contact.address = nil
-      expect(contact).not_to be_valid
-      expect(contact.errors[:address]).to include("can't be blank")
-    end
-
-    it 'is missing credit card number' do
-      contact.credit_card = nil
-      expect(contact).not_to be_valid
-      expect(contact.errors[:credit_card]).to include("can't be blank")
-    end
-
-    it 'is missing email' do
-      contact.email = nil
-      expect(contact).not_to be_valid
-      expect(contact.errors[:email]).to include("can't be blank")
-    end
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:birthday) }
+    it { should validate_presence_of(:phone) }
+    it { should validate_presence_of(:address) }
+    it { should validate_presence_of(:credit_card) }
+    it { should validate_presence_of(:email) }
   end
 
   describe 'name field validations' do
@@ -80,5 +35,29 @@ RSpec.describe Contact, type: :model do
         '(+00) 000 000 00 00 or (+00) 000-000-00-00 are the only allowed formats'
       )
     }
+  end
+
+  describe 'email field validations' do
+    Contact.new(
+      name: 'Yesid Otero',
+      phone: '(+57) 320-482-73-67',
+      email: 'yesid@example.com',
+      address: 'Cra 47 # 57 -90',
+      birthday: '19911204',
+      credit_card: '15628778935627430',
+      user_id: 1
+    )
+    it { should allow_value('user@example.com').for(:email) }
+    it {
+      should_not allow_value('userexample.com').for(:email).with_message(
+        'is not a valid email'
+      )
+    }
+    it {
+      should_not allow_value('user@example').for(:email).with_message(
+        'is not a valid email'
+      )
+    }
+    it { should validate_uniqueness_of(:email).ignoring_case_sensitivity }
   end
 end
