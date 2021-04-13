@@ -67,5 +67,18 @@ RSpec.describe Contact, type: :model do
     it { should_not allow_value('Yesid#Lopez').for(:name).with_message('- is the only special character allowed') }
   end
 
-  
+  describe 'phone field validations' do
+    it { should allow_value('(+57) 680 789 56 43').for(:phone) }
+    it { should allow_value('(+57) 680-789-56-43').for(:phone) }
+    it {
+      should_not allow_value('57 680-789-56-43').for(:phone).with_message(
+        '(+00) 000 000 00 00 or (+00) 000-000-00-00 are the only allowed formats'
+      )
+    }
+    it {
+      should_not allow_value('57 6807895643').for(:phone).with_message(
+        '(+00) 000 000 00 00 or (+00) 000-000-00-00 are the only allowed formats'
+      )
+    }
+  end
 end
