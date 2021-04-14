@@ -31,12 +31,10 @@ class Contact < ApplicationRecord
     CSV.foreach(file.path, headers: true) do |row|
       contact_elements = row.to_h
       contact = find_or_create_by!(
-        name: contact_elements['name'], birthday: contact_elements['birthday'],
-        phone: contact_elements['phone'], address: contact_elements['address'],
-        credit_card: contact_elements['credit_card'],
+        name: contact_elements['name'], birthday: contact_elements['birthday'], phone: contact_elements['phone'],
+        address: contact_elements['address'], credit_card: contact_elements['credit_card'],
         franchise: CreditCardValidations::Detector.new(contact_elements['credit_card']).brand_name,
-        last_digits: (contact_elements['credit_card']).last(4),
-        email: contact_elements['email'], user_id: user.id
+        last_digits: (contact_elements['credit_card']).last(4), email: contact_elements['email'], user_id: user.id
       )
       contact.update(contact_elements)
     end
