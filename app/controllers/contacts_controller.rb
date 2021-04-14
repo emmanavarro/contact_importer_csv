@@ -13,7 +13,6 @@ class ContactsController < ApplicationController
   end
 
   def import
-    require 'csv'
     Contact.import(params[:file], current_user)
     redirect_to contacts_url, notice: 'Contacts were successfully imported.'
   end
@@ -25,6 +24,6 @@ class ContactsController < ApplicationController
   end
 
   def contact_params
-    params.require(:contact).permit(:name, :birthday, :phone, :credit_card, :franchise, :email)
+    params.require(:contact).permit(:name, :birthday, :phone, :credit_card, :franchise, :email, :last_digits)
   end
 end
