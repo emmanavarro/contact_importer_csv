@@ -1,7 +1,5 @@
 <%= link_to 'Log Out', destroy_user_session_path, method: :delete %>
 
-<p id="notice"><%= notice %></p>
-
 <h1>Contacts</h1>
 
 <table>
@@ -25,7 +23,7 @@
         <td><%= format_date(contact.birthday) %></td>
         <td><%= contact.phone %></td>
         <td><%= contact.address %></td>
-        <td><%= contact.last_digits.last(4) %></td>
+        <td><%= contact.last_digits %></td>
         <td><%= contact.franchise %></td>
         <td><%= contact.email %></td>
         <td><%= link_to 'Show', contact %></td>
