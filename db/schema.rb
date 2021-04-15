@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_13_212603) do
+ActiveRecord::Schema.define(version: 2021_04_15_040448) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "name"
@@ -32,6 +32,32 @@ ActiveRecord::Schema.define(version: 2021_04_13_212603) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "failed_contacts", force: :cascade do |t|
+    t.string "name"
+    t.string "birthday"
+    t.string "phone"
+    t.string "address"
+    t.string "credit_card"
+    t.string "franchise"
+    t.string "last_digits"
+    t.string "email"
+    t.text "error"
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_failed_contacts_on_user_id"
+  end
+
+  create_table "import_files", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "filename"
+    t.string "status"
+    t.string "import_errors"
+    t.index ["user_id"], name: "index_import_files_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -45,4 +71,6 @@ ActiveRecord::Schema.define(version: 2021_04_13_212603) do
   end
 
   add_foreign_key "contacts", "users"
+  add_foreign_key "failed_contacts", "users"
+  add_foreign_key "import_files", "users"
 end
