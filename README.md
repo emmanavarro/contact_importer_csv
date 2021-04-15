@@ -6,6 +6,7 @@
 - Ruby 3.0
 - Rails 6+
 - Aditional gems:
+  * gem 'aasm'
   * gem 'bcrypt'
   * gem 'devise'
   * gem 'credit_card_validations'
