@@ -6,7 +6,7 @@ class ImportFilesController < ApplicationController
   end
 
   def new
-    @import_file = ImportFile.new
+    @import_file = ImportFile.all
   end
 
   def create

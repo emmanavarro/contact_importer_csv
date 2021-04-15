@@ -6,6 +6,7 @@
       |  <%= link_to "Current Contacts", contacts_path %>  |
         <%= link_to "Import CSV File", import_files_path %>  |
         <%= link_to "Invalid Contacts", failed_contacts_path %>  |
+        <%= link_to "Imported Files State", new_import_file_path %>
         <%= link_to "Log Out", destroy_user_session_path, method: :delete %>  |
     <% end %>
 </div>
