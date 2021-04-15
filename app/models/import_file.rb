@@ -1,6 +1,5 @@
 class ImportFile < ApplicationRecord
   belongs_to :user
-  has_one_attached :file
 
   def self.import(file, user)
     CSV.foreach(file.path, headers: true) do |row|
