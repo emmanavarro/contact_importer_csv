@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_15_093117) do
+ActiveRecord::Schema.define(version: 2021_04_15_154322) do
 
   create_table "contacts", force: :cascade do |t|
     t.string "name"
@@ -53,7 +53,6 @@ ActiveRecord::Schema.define(version: 2021_04_15_093117) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "filename"
-    t.string "status"
     t.string "import_errors"
     t.string "state"
     t.index ["user_id"], name: "index_import_files_on_user_id"
