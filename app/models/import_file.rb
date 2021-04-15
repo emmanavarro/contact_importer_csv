@@ -4,11 +4,15 @@ class ImportFile < ApplicationRecord
   validates_presence_of :state
 
   aasm column: 'state' do
-    state :processing, initial: true
-    state :waiting, :failed, :complete
+    state :waiting, initial: true
+    state :processing, :failed, :complete
+
+    event :in_process do
+      transitions from: :waiting, to: :processing
+    end
 
     event :complete_import do
-      transitions from: %i[processing failed], to: :complete
+      transitions from: :processing, to: :complete
     end
 
     event :fail_import do
@@ -17,6 +21,7 @@ class ImportFile < ApplicationRecord
   end
 
   def import(file, user)
+    marker = 0
     CSV.foreach(file.path, headers: true) do |row|
       contact_elements = row.to_h
       contact = Contact.new(
@@ -26,10 +31,11 @@ class ImportFile < ApplicationRecord
         last_digits: (contact_elements['credit_card']).last(4), email: contact_elements['email'], user_id: user.id
       )
       if contact.save && may_complete_import?
-        complete_import!
+        marker = 1
       else
         failed_contact!(user, contact, contact_elements)
       end
+      in_process! if may_in_process?
     end
   end
 
@@ -45,6 +51,11 @@ class ImportFile < ApplicationRecord
       user_id: user.id, error: errors_msg
     )
     failed_contact.save
-    fail_import! if may_fail_import?
+  end
+
+  if marker == 1
+    complete_import!
+  else
+    fail_import!
   end
 end
