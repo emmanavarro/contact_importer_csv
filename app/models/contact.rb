@@ -27,6 +27,8 @@ class Contact < ApplicationRecord
   def credit_card_validations
     CreditCard.new(@credit_card)
     self.franchise = CreditCardValidations::Detector.new(credit_card).brand_name
+    errors.add(:credit_card, 'invalid credit card number') unless franchise
+    errors.add(:franchise, 'invalid credit card number') unless franchise
   end
 
   def credit_card_encrypt

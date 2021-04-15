@@ -1,7 +1,22 @@
 class ImportFile < ApplicationRecord
+  include AASM
   belongs_to :user
+  validates_presence_of :state
 
-  def self.import(file, user)
+  aasm column: 'state' do
+    state :processing, initial: true
+    state :waiting, :failed, :complete
+
+    event :complete_import do
+      transitions from: %i[processing failed], to: :complete
+    end
+
+    event :fail_import do
+      transitions from: :processing, to: :failed
+    end
+  end
+
+  def import(file, user)
     CSV.foreach(file.path, headers: true) do |row|
       contact_elements = row.to_h
       contact = Contact.new(
@@ -10,11 +25,15 @@ class ImportFile < ApplicationRecord
         franchise: CreditCardValidations::Detector.new(contact_elements['credit_card']).brand_name,
         last_digits: (contact_elements['credit_card']).last(4), email: contact_elements['email'], user_id: user.id
       )
-      failed_contact!(user, contact, contact_elements) unless contact.save
+      if contact.save && may_complete_import?
+        complete_import!
+      else
+        failed_contact!(user, contact, contact_elements)
+      end
     end
   end
 
-  def self.failed_contact!(user, contact, contact_elements)
+  def failed_contact!(user, contact, contact_elements)
     errors_msg = []
     errors_msg = contact.errors.full_messages.join(', ')
     failed_contact = FailedContact.new(
@@ -26,6 +45,6 @@ class ImportFile < ApplicationRecord
       user_id: user.id, error: errors_msg
     )
     failed_contact.save
+    fail_import! if may_fail_import?
   end
-
 end

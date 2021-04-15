@@ -10,9 +10,9 @@ class ImportFilesController < ApplicationController
   end
 
   def create
-    ImportFile.import(params[:file], current_user)
     @import_file = current_user.import_files.build(filename: params[:file].original_filename)
     @import_file.save
+    @import_file.import(params[:file], current_user)
     redirect_to contacts_path, notice: 'Contacts were successfully imported'
   end
 end
