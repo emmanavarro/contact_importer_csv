@@ -10,6 +10,7 @@ class Contact < ApplicationRecord
   validates :phone, format: { with: VALID_PHONE_REGEX,
                               message: '(+00) 000 000 00 00 or (+00) 000-000-00-00 are the only allowed formats' }
   validates :email, email: true, uniqueness: true, length: { maximum: 100 }
+  validate :credit_card_validations
   after_validation :credit_card_encrypt
 
   def valid_birthday
@@ -23,6 +24,17 @@ class Contact < ApplicationRecord
     errors.add(:file, 'file must be of CSV type.') if file.attached? && !file.content_type.in?(valid_type)
   end
 
+  def credit_card_validations
+    CreditCard.new(credit_card)
+    self.franchise = CreditCardValidations::Detector.new(credit_card).brand_name
+    if franchise
+      self.last_digits = CreditCard.new(last_digits).last(4)
+    else
+      errors.add(:credit_card, 'invalid credit card number')
+      errors.add(:franchise, 'invalid credit card number')
+    end
+  end
+
   def credit_card_encrypt
     self.credit_card = CreditCard.new(@credit_card).encrypt
   end
@@ -33,8 +45,8 @@ class Contact < ApplicationRecord
       contact = find_or_create_by!(
         name: contact_elements['name'], birthday: contact_elements['birthday'], phone: contact_elements['phone'],
         address: contact_elements['address'], credit_card: contact_elements['credit_card'],
-        franchise: CreditCardValidations::Detector.new(contact_elements['credit_card']).brand_name,
-        last_digits: (contact_elements['credit_card']).last(4), email: contact_elements['email'], user_id: user.id
+        franchise: contact_elements['credit_card'], last_digits: (contact_elements['credit_card']),
+        email: contact_elements['email'], user_id: user.id
       )
       contact.update(contact_elements)
     end

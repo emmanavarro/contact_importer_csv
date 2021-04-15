@@ -1,0 +1,33 @@
+<h1>Failed contacts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Birthday</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th>Credit Card</th>
+      <th>Franchise</th>
+      <th>Email</th>
+      <th>Error</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @failed_contacts.each do |failed| %>
+      <tr>
+        <td><%= failed.name %></td>
+        <td><%= format_date(failed.birthday) %></td>
+        <td><%= failed.phone %></td>
+        <td><%= failed.address %></td>
+        <td><%= failed.last_digits %></td>
+        <td><%= failed.franchise %></td>
+        <td><%= failed.email %></td>
+        <td><%= failed.error %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @failed_contacts %>

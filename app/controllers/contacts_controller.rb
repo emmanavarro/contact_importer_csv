@@ -1,8 +1,9 @@
 class ContactsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_contact, only: %i[show destroy]
 
   def index
-    @contacts = Contact.all
+    @contacts = Contact.all.paginate(page: params[:page], per_page: 15)
   end
 
   def show; end
@@ -10,11 +11,6 @@ class ContactsController < ApplicationController
   def destroy
     @contact.destroy
     redirect_to contacts_url
-  end
-
-  def import
-    Contact.import(params[:file], current_user)
-    redirect_to contacts_url, notice: 'Contacts were successfully imported.'
   end
 
   private

@@ -1,0 +1,47 @@
+<h2>Import a CSV file</h2>
+<div>
+  <%= form_tag import_files_path, multipart: true do %>
+    <% if @import_file.errors.any? %>
+      <h2>There were some errors:</h2>
+      <ul>
+        <% @import_file.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= file_field_tag :file, required: true %>
+
+    <h3>Choose the headers for your file:</h3>
+
+    <div>
+      <%= label_tag "Column N°1" %>
+      <%= select_tag(:field1, options_for_select([['Name', 'name'], ['Birthday', 'birthday'], ['Phone', 'phone'], ['Address', 'address'], ['Credit Card', 'credit_card'], ['Email', 'email']], nil)) %>
+
+      <%= label_tag "Column N°2" %>
+      <%= select_tag(:field2, options_for_select([['Name', 'name'], ['Birthday', 'birthday'], ['Phone', 'phone'], ['Address', 'address'], ['Credit Card', 'credit_card'], ['Email', 'email']], nil)) %>
+
+      <%= label_tag "Column N°3" %>
+      <%= select_tag(:field3, options_for_select([['Name', 'name'], ['Birthday', 'birthday'], ['Phone', 'phone'], ['Address', 'address'], ['Credit Card', 'credit_card'], ['Email', 'email']], nil)) %>
+
+      <%= label_tag "Column N°4" %>
+      <%= select_tag(:field4, options_for_select([['Name', 'name'], ['Birthday', 'birthday'], ['Phone', 'phone'], ['Address', 'address'], ['Credit Card', 'credit_card'], ['Email', 'email']], nil)) %>
+
+      <%= label_tag "Column N°5" %>
+      <%= select_tag(:field5, options_for_select([['Name', 'name'], ['Birthday', 'birthday'], ['Phone', 'phone'], ['Address', 'address'], ['Credit Card', 'credit_card'], ['Email', 'email']], nil)) %>
+
+      <%= label_tag "Column N°6" %>
+      <%= select_tag(:field6, options_for_select([['Name', 'name'], ['Birthday', 'birthday'], ['Phone', 'phone'], ['Address', 'address'], ['Credit Card', 'credit_card'], ['Email', 'email']], nil)) %>
+    </div>
+
+  <br/>
+  <div>
+    <%= submit_tag "Import CSV" %>
+  </div>
+  <% end %>
+</div>
+<br/>
+
+<div>
+  <%= link_to 'Back', contacts_path %>
+</div>
