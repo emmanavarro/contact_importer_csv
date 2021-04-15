@@ -1,4 +1,4 @@
-# Contact importer in CSV
+# Contact importer from CSV
 
 ## Requirements
 
@@ -6,8 +6,14 @@
 - Ruby 3.0
 - Rails 6+
 - Aditional gems:
+  * gem 'bcrypt'
   * gem 'devise'
+  * gem 'credit_card_validations'
+  * gem 'rails-controller-testing'
+  * gem 'rexml'
   * gem 'rspec-rails'
+  * gem 'shoulda-matchers'
+  * gem 'will_paginate'
 
 ## Installation & Init
 
