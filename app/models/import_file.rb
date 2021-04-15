@@ -37,6 +37,11 @@ class ImportFile < ApplicationRecord
       end
       in_process! if may_in_process?
     end
+    if marker == 1
+      complete_import!
+    else
+      fail_import!
+    end
   end
 
   def failed_contact!(user, contact, contact_elements)
@@ -51,11 +56,5 @@ class ImportFile < ApplicationRecord
       user_id: user.id, error: errors_msg
     )
     failed_contact.save
-  end
-
-  if marker == 1
-    complete_import!
-  else
-    fail_import!
   end
 end

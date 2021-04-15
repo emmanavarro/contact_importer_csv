@@ -1,0 +1,19 @@
+<h1>Imported Files</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @import_file.each do |imported_file| %>
+      <tr>
+        <td><%= imported_file.filename %></td>
+        <td><%= imported_file.state %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
